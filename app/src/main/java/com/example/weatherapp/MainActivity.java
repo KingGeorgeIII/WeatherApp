@@ -15,6 +15,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //Royce Driving
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // George is Driving
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -47,31 +49,34 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
     }
 
     public void searchButton(View view){
+        // Royce is Driving
         String input;
         Log.d("Tagg", (input = edtAddress.getText().toString().replace(" ", "+")));
         new GetCoordinates().execute(input);
+
+        MapFragment mapFragment = (MapFragment) getFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
 
     //George Driving
     @Override
     public void onMapReady(GoogleMap map) {
+        // Royce
         GoogleMap mMap = map;
-        // Add a marker in Sydney, Australia, and move the camera.
         LatLng Location = new LatLng(lat, lng);
         mMap.addMarker(new MarkerOptions().position(Location).title("Marker"));
-    //    MarkerOptions a = new MarkerOptions().position(new LatLng(lat, lng));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(Location));
 
     }
 
-    private class GetCoordinates extends AsyncTask<String,Void,String> {
 
-        /*String stringUrl = params[0];
-        String result;
-        String inputLine; */
+    private class GetCoordinates extends AsyncTask<String,Void,String> {
+        // George is driving
 
         @Override
         protected String doInBackground(String... strings) {
@@ -84,12 +89,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 InputStreamReader mapReader = http.getHTTPData(url);
                 BufferedReader reader = new BufferedReader(mapReader);
                 StringBuilder sb = new StringBuilder();
-                Log.d("Tag", "Hello");
                 while((inputLine = reader.readLine()) != null){
                     //Log.d("Tag",inputLine);
                     sb.append(inputLine);
                 }
-                Log.d("Tagf", "Bye");
 
                 try{
                     JSONObject jsonObject = new JSONObject(sb.toString());
@@ -106,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Log.d("Tag", String.valueOf(lat) + String.valueOf(lng));
                 // SKYNET
                 HttpDataHandler http2 = new HttpDataHandler();
                 String url2 = String.format(
@@ -114,14 +116,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 InputStreamReader weatherReader = http2.getHTTPData(url2);
                 BufferedReader reader2 = new BufferedReader(weatherReader);
                 StringBuilder strb = new StringBuilder();
-                Log.d("Tag", "Wa");
                 String in;
                 while((in = reader2.readLine()) != null){
-                    Log.d("New",in);
                     strb.append(in);
                 }
-                Log.d("Tagf", "luigi");
 
+                //Royce is Driving
                 try{
                     JSONObject jsonObject = new JSONObject(strb.toString());
 
@@ -150,11 +150,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             return null;
         }
 
+        //George is Driving
         @Override
         protected void onPostExecute(String s) {
             TextView txt = (TextView) findViewById(R.id.textView2);
             txt.setText(s);
-
         }
     }
 
